@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=0.9.4
+Type=Application
+Name=xautolock
+Comment=lock the screen after 15 min of inactivity
+Exec=xautolock -time 15 -locker slock -notify 30 -notifier "notify-send 'Screen will lock in 30 seconds'"
+OnlyShowIn=XFCE;
+RunHook=0
+StartupNotify=false
+Terminal=false
+Hidden=false
+

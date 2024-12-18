@@ -1,0 +1,17 @@
+#! /bin/sh
+
+# Launch sxhkd
+sxhkd &
+
+# Setup workspaces
+bspc monitor -d 1 2 3 4 5
+
+# Launch wallpaper manager
+nitrogen --restore &
+
+# Start keybinding daemon
+sxhkd &
+
+# Launch polybar
+~/.config/polybar/launch.sh &
+
