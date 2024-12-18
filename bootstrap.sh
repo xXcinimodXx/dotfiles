@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define variables
-DOTFILES_REPO="git@github.com:yourusername/dotfiles.git"
+DOTFILES_REPO="https://github.com/xXcinimodXx/dotfiles.git"
 DOTFILES_DIR="$HOME/dotfiles"
 TARGET_CONFIG_DIR="$HOME/.config"
 CONFIGS=("autostart" "gtk-3.0" "rofi" "bspwm" "polybar" "systemd")
