@@ -1,0 +1,29 @@
+# sxhkd configuration file
+
+# Open rofi in drun mode
+super + space
+    rofi -show drun
+
+# Open kitty terminal
+super + t
+    kitty
+
+# Open rofi calculator
+super + c
+    rofi -show calc -modi calc -no-show-match -no-sort
+
+# Switch bspwm workspaces (desktops) using left and right arrow keys
+super + Left
+    bspc desktop -f prev.local
+super + Right
+    bspc desktop -f next.local
+
+# Switch focus within the workspace using up and down arrow keys
+super + Up
+    bspc node -f north
+super + Down
+    bspc node -f south
+
+# Open power menu (custom bash script)
+super + Delete
+    ~/.config/scripts/power_menu.sh

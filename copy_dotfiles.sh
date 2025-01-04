@@ -1,26 +1,18 @@
 #!/bin/bash
 
-# Source directories
-SOURCE_CONFIG="$HOME/.config"
+# Define the NAS target directory
+NAS_DIR="/mnt/nas-001/os/dotfliles/.config"
 
-# Destination directory
-DEST_REPO="/mnt/nas-001/os/dotfiles/.config"
+# Check if the NAS directory is available
+if [ -d "$NAS_DIR" ]; then
+  echo "NAS directory is available. Proceeding with copy."
 
-# List of configurations to copy
-CONFIGS=("autostart" "gtk-3.0" "rofi" "bspwm" "polybar" "systemd")
+  # Copy the .config directory to the NAS
+  cp -r ~/.config "$NAS_DIR"
 
-# Ensure the destination directory exists
-mkdir -p "$DEST_REPO"
-
-# Copy each configuration
-echo "Copying configurations..."
-for config in "${CONFIGS[@]}"; do
-    if [ -d "$SOURCE_CONFIG/$config" ]; then
-        echo "Copying $config..."
-        rsync -av --progress "$SOURCE_CONFIG/$config" "$DEST_REPO/"
-    else
-        echo "Warning: $config does not exist in $SOURCE_CONFIG"
-    fi
-done
-
-echo "Configurations copied to $DEST_REPO"
+  # Print completion message
+  echo ".config directory copied to $NAS_DIR successfully."
+else
+  echo "NAS directory is not available. Aborting."
+  exit 1
+fi

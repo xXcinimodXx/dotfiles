@@ -1,0 +1,45 @@
+[global]
+# Set the geometry of notifications
+geometry = "300x50-10+10"
+
+# Define the frame size (border width)
+frame_width = 1
+
+# Define the frame color
+frame_color = "#FFFF00"  # Yellow border for normal and low urgency
+
+# Corner radius (set to 0 for no rounding)
+radius = 0
+
+# Padding between elements inside the notification
+padding = 8
+
+# Separator height between title and body text
+separator_height = 2
+
+# Set the notification's idle time in seconds (time it is displayed)
+timeout = 10
+
+# Set the font
+font = "FiraCode Nerd Font 11"
+
+[frame]
+# Set border color explicitly for each urgency level
+low_frame_color = "#FFFF00"
+normal_frame_color = "#FFFF00"
+critical_frame_color = "#FF0000"  # Red border for critical notifications
+
+[urgency_low]
+# Background and foreground colors for low urgency notifications
+background = "#000000"  # Black background
+foreground = "#FFFFFF"  # White text
+
+[urgency_normal]
+# Background and foreground colors for normal urgency notifications
+background = "#000000"  # Black background
+foreground = "#FFFFFF"  # White text
+
+[urgency_critical]
+# Background and foreground colors for critical notifications
+background = "#000000"  # Black background
+foreground = "#FF0000"  # Red text
