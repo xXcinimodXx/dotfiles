@@ -41,7 +41,6 @@ if ! sudo pacman -S --needed \
     gst-plugins-good \
     gst-plugins-bad \
     gst-libav \
-    ttf-fira-code-nerd \
     samba \
     cifs-utils \
     vlc; then
@@ -66,9 +65,9 @@ else
     echo "yay is already installed."
 fi
 
-# Step 4: Install Brave browser and VSCode using yay
-echo "Installing Brave browser and VSCode using yay..."
-yay -S --noconfirm brave-bin visual-studio-code-bin
+# Step 4: Install Brave browser, VSCode, and Nerd Fonts using yay
+echo "Installing Brave browser, VSCode, and Nerd Fonts Fira Code via yay..."
+yay -S --noconfirm brave-bin visual-studio-code-bin nerd-fonts-fira-code
 
 # Step 5: Enable ly (do not start immediately)
 echo "Enabling ly display manager (will start after reboot)..."
@@ -95,7 +94,7 @@ echo "Applying WhiteSur GTK theme globally..."
 cat > ~/.gtkrc-2.0 <<EOL
 gtk-theme-name="WhiteSur"
 gtk-icon-theme-name="Adwaita"
-gtk-font-name="Fira Code Nerd Font 10"
+gtk-font-name="FiraCode Nerd Font 10"
 gtk-cursor-theme-name="Adwaita"
 EOL
 
@@ -105,7 +104,7 @@ cat > ~/.config/gtk-3.0/settings.ini <<EOL
 gtk-theme-name=WhiteSur
 gtk-icon-theme-name=Adwaita
 gtk-cursor-theme-name=Adwaita
-gtk-font-name=Fira Code Nerd Font 10
+gtk-font-name=FiraCode Nerd Font 10
 EOL
 
 echo "WhiteSur GTK theme applied globally."
@@ -135,8 +134,8 @@ echo "username=your_username"
 echo "password=your_password"
 
 # Step 10: Completion message
-echo "Setup complete! WhiteSur GTK theme applied globally, .config directory copied, yay installed, Brave browser and VSCode installed, and NAS configuration added to /etc/fstab."
+echo "Setup complete! WhiteSur GTK theme applied globally, .config directory copied, yay installed, Brave browser, VSCode, and Nerd Fonts Fira Code installed, and NAS configuration added to /etc/fstab."
 echo "Reboot your system to apply all changes, including starting ly and mounting the NAS share."
 
-# Step 11: remove the repo as we do not need to keep it locally
+# Step 11: Remove the repo as we do not need to keep it locally
 rm -rf ~/dotfiles
