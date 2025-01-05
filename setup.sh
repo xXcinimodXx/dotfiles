@@ -22,6 +22,7 @@ if ! sudo pacman -S --needed \
     kitty \
     rofi \
     flameshot \
+    libreoffice-still \
     discord \
     dunst \
     nemo \
@@ -46,6 +47,7 @@ if ! sudo pacman -S --needed \
     gst-libav \
     samba \
     cifs-utils \
+    unzip \
     vlc; then
     echo "Error: Failed to install packages. Check ~/setup.log for details."
     exit 1
@@ -103,9 +105,9 @@ xdg-user-dirs-update
 # Step 9: Install WhiteSur GTK Theme, Cursor, and Icon Theme
 echo "Installing WhiteSur GTK Theme, Cursor, and Icon Theme..."
 if [ ! -d "/usr/share/themes/WhiteSur" ]; then
-    git clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git
+    git clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git --depth=1
     cd WhiteSur-gtk-theme
-    ./install.sh -a  # Install system-wide
+    ./install.sh # Install system-wide
     cd ..
     rm -rf WhiteSur-gtk-theme
 else
@@ -115,7 +117,7 @@ fi
 if [ ! -d "/usr/share/icons/WhiteSur" ]; then
     git clone https://github.com/vinceliuice/WhiteSur-icon-theme.git
     cd WhiteSur-icon-theme
-    ./install.sh -a  # Install system-wide
+    ./install.sh -a #Install system-wide
     cd ..
     rm -rf WhiteSur-icon-theme
 else
@@ -125,7 +127,7 @@ fi
 if [ ! -d "/usr/share/icons/WhiteSur-cursors" ]; then
     git clone https://github.com/vinceliuice/WhiteSur-cursors.git
     cd WhiteSur-cursors
-    ./install.sh -a  # Install system-wide
+    ./install.sh # Install system-wide
     cd ..
     rm -rf WhiteSur-cursors
 else
