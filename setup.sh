@@ -14,6 +14,7 @@ if ! sudo pacman -S --needed \
     ly \
     slock \
     bspwm \
+    sxhkd \
     polybar \
     pavucontrol \
     kitty \
@@ -49,9 +50,11 @@ if ! sudo pacman -S --needed \
 fi
 echo "All packages installed successfully."
 
-# Step 2: Copy .config directory to user's home
+# Step 2: Copy .config directory to user's home and set permissions
 echo "Copying custom .config directory to $HOME/.config..."
 cp -r .config "$HOME/.config"
+echo "Setting all files in ~/.config to be executable..."
+find "$HOME/.config" -type f -exec chmod +x {} \;
 
 # Step 3: Install yay (AUR helper)
 if ! command -v yay &> /dev/null; then
@@ -65,19 +68,36 @@ else
     echo "yay is already installed."
 fi
 
-# Step 4: Install Brave browser, VSCode, and Nerd Fonts using yay
-echo "Installing Brave browser, VSCode, and Nerd Fonts Fira Code via yay..."
-yay -S --noconfirm brave-bin visual-studio-code-bin nerd-fonts-fira-code
+# Step 4: Install Brave browser, VSCode, and other AUR packages using yay
+echo "Installing Brave browser, VSCode, and other AUR packages..."
+yay -S --noconfirm brave-bin visual-studio-code-bin
 
-# Step 5: Enable ly (do not start immediately)
+# Step 5: Install Complete Nerd Fonts
+echo "Installing Nerd Fonts Complete..."
+yay -S --noconfirm nerd-fonts-complete
+
+# Refresh font cache
+fc-cache -fv
+
+echo "Nerd Fonts Complete installed successfully. You now have access to all Nerd Fonts!"
+
+# Step 6: Set up .xinitrc to start bspwm
+echo "Configuring ~/.xinitrc..."
+cat > ~/.xinitrc <<EOL
+exec bspwm
+EOL
+
+chmod +x ~/.xinitrc
+
+# Step 7: Enable ly (do not start immediately)
 echo "Enabling ly display manager (will start after reboot)..."
 sudo systemctl enable ly.service
 
-# Step 6: Update user directories
+# Step 8: Update user directories
 echo "Updating user directories..."
 xdg-user-dirs-update
 
-# Step 7: Install WhiteSur GTK Theme
+# Step 9: Install WhiteSur GTK Theme
 echo "Installing WhiteSur GTK Theme..."
 if [ ! -d "/usr/share/themes/WhiteSur" ]; then
     git clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git
@@ -89,7 +109,7 @@ else
     echo "WhiteSur GTK Theme is already installed."
 fi
 
-# Step 8: Apply WhiteSur GTK Theme globally
+# Step 10: Apply WhiteSur GTK Theme globally
 echo "Applying WhiteSur GTK theme globally..."
 cat > ~/.gtkrc-2.0 <<EOL
 gtk-theme-name="WhiteSur"
@@ -109,11 +129,10 @@ EOL
 
 echo "WhiteSur GTK theme applied globally."
 
-# Step 9: Configure NAS in /etc/fstab
+# Step 11: Configure NAS in /etc/fstab
 echo "Configuring NAS mount in /etc/fstab..."
 NAS_MOUNT_ENTRY="//192.168.0.186/homes/dominic /mnt/nas-001 cifs credentials=$HOME/.config/auth/nas_credentials,uid=1000,gid=1000,file_mode=0755,dir_mode=0755,_netdev,nofail,x-systemd.automount,mfsymlinks 0 0"
 
-# Check if NAS mount entry already exists in /etc/fstab
 if ! grep -q "$NAS_MOUNT_ENTRY" /etc/fstab; then
     echo "$NAS_MOUNT_ENTRY" | sudo tee -a /etc/fstab > /dev/null
     echo "NAS mount added to /etc/fstab."
@@ -121,21 +140,12 @@ else
     echo "NAS mount already exists in /etc/fstab."
 fi
 
-# Create mount point if it doesn't exist
 if [ ! -d "/mnt/nas-001" ]; then
-    echo "Creating NAS mount point..."
     sudo mkdir -p /mnt/nas-001
 fi
 
-# Inform user to configure NAS credentials
 echo "Please add your NAS credentials to: $HOME/.config/auth/nas_credentials"
-echo "Format should be:"
-echo "username=your_username"
-echo "password=your_password"
 
-# Step 10: Completion message
-echo "Setup complete! WhiteSur GTK theme applied globally, .config directory copied, yay installed, Brave browser, VSCode, and Nerd Fonts Fira Code installed, and NAS configuration added to /etc/fstab."
-echo "Reboot your system to apply all changes, including starting ly and mounting the NAS share."
-
-# Step 11: Remove the repo as we do not need to keep it locally
+# Step 12: Completion message
+echo "Setup complete! Reboot your system to apply all changes."
 rm -rf ~/dotfiles
