@@ -4,7 +4,7 @@ echo "Setting up your Arch Linux environment..."
 
 # Step 1: Install X11 and necessary packages
 echo "Installing necessary packages..."
-sudo pacman -S --needed \
+if ! sudo pacman -S --needed \
     xorg-server \
     xorg-xrandr \
     xorg-xinit \
@@ -15,7 +15,7 @@ sudo pacman -S --needed \
     slock \
     bspwm \
     polybar \
-    pavucontrol \ 
+    pavucontrol \
     kitty \
     rofi \
     flameshot \
@@ -44,7 +44,11 @@ sudo pacman -S --needed \
     ttf-fira-code-nerd \
     samba \
     cifs-utils \
-    vlc
+    vlc; then
+    echo "Error: Failed to install packages. Check ~/setup.log for details."
+    exit 1
+fi
+echo "All packages installed successfully."
 
 # Step 2: Copy .config directory to user's home
 echo "Copying custom .config directory to $HOME/.config..."
