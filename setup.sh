@@ -11,6 +11,7 @@ if ! sudo pacman -S --needed \
     xorg-xsetroot \
     xorg-xinput \
     arandr \
+    lxappearance \
     ly \
     slock \
     neofetch \
@@ -73,14 +74,15 @@ fi
 echo "Installing Brave browser, VSCode, and other AUR packages..."
 yay -S --noconfirm brave-bin visual-studio-code-bin
 
-# Step 5: Install Complete Nerd Fonts
-echo "Installing Nerd Fonts Complete..."
-yay -S --noconfirm nerd-fonts-complete
-
-# Refresh font cache
+# Step 5: Install Fira Code Nerd Font Manually
+echo "Installing Fira Code Nerd Font..."
+mkdir -p ~/.local/share/fonts
+cd ~/.local/share/fonts
+curl -fLo "FiraCode.zip" https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraCode.zip
+unzip -o FiraCode.zip
+rm FiraCode.zip
 fc-cache -fv
-
-echo "Nerd Fonts Complete installed successfully. You now have access to all Nerd Fonts!"
+echo "Fira Code Nerd Font installed successfully!"
 
 # Step 6: Set up .xinitrc to start bspwm
 echo "Configuring ~/.xinitrc..."
@@ -98,8 +100,8 @@ sudo systemctl enable ly.service
 echo "Updating user directories..."
 xdg-user-dirs-update
 
-# Step 9: Install WhiteSur GTK Theme
-echo "Installing WhiteSur GTK Theme..."
+# Step 9: Install WhiteSur GTK Theme, Cursor, and Icon Theme
+echo "Installing WhiteSur GTK Theme, Cursor, and Icon Theme..."
 if [ ! -d "/usr/share/themes/WhiteSur" ]; then
     git clone https://github.com/vinceliuice/WhiteSur-gtk-theme.git
     cd WhiteSur-gtk-theme
@@ -110,25 +112,35 @@ else
     echo "WhiteSur GTK Theme is already installed."
 fi
 
-# Step 10: Apply WhiteSur GTK Theme globally
+if [ ! -d "/usr/share/icons/WhiteSur" ]; then
+    git clone https://github.com/vinceliuice/WhiteSur-icon-theme.git
+    cd WhiteSur-icon-theme
+    ./install.sh -a  # Install system-wide
+    cd ..
+    rm -rf WhiteSur-icon-theme
+else
+    echo "WhiteSur Icon Theme is already installed."
+fi
+
+if [ ! -d "/usr/share/icons/WhiteSur-cursors" ]; then
+    git clone https://github.com/vinceliuice/WhiteSur-cursors.git
+    cd WhiteSur-cursors
+    ./install.sh -a  # Install system-wide
+    cd ..
+    rm -rf WhiteSur-cursors
+else
+    echo "WhiteSur Cursor Theme is already installed."
+fi
+
+# Step 10: Apply WhiteSur GTK Theme using settings.ini
 echo "Applying WhiteSur GTK theme globally..."
-cat > ~/.gtkrc-2.0 <<EOL
-gtk-theme-name="WhiteSur"
-gtk-icon-theme-name="Adwaita"
-gtk-font-name="FiraCode Nerd Font 10"
-gtk-cursor-theme-name="Adwaita"
-EOL
+if [ -f "$HOME/.config/gtk-3.0/settings.ini" ]; then
+    echo "Stock settings.ini already copied to ~/.config/gtk-3.0/"
+else
+    echo "Warning: Stock settings.ini was not found. Please verify the file is included in your repository."
+fi
 
-mkdir -p ~/.config/gtk-3.0
-cat > ~/.config/gtk-3.0/settings.ini <<EOL
-[Settings]
-gtk-theme-name=WhiteSur
-gtk-icon-theme-name=Adwaita
-gtk-cursor-theme-name=Adwaita
-gtk-font-name=FiraCode Nerd Font 10
-EOL
-
-echo "WhiteSur GTK theme applied globally."
+echo "To finalize, open lxappearance to confirm the theme settings if needed."
 
 # Step 11: Configure NAS in /etc/fstab
 echo "Configuring NAS mount in /etc/fstab..."
@@ -149,7 +161,4 @@ echo "Please add your NAS credentials to: $HOME/.config/auth/nas_credentials"
 
 # Step 12: Completion message
 echo "Setup complete! Reboot your system to apply all changes."
-
-cd ..
-
 rm -rf ~/dotfiles

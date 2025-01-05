@@ -6,5 +6,8 @@ sxhkd &
 # Setup workspaces
 bspc monitor -d 1 2 3 4 5
 
+# Start dunst
+dunst &
+
 # Launch polybar
 ~/.config/polybar/launch.sh &

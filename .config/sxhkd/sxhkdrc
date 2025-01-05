@@ -1,5 +1,3 @@
-# sxhkd configuration file
-
 # Open rofi in drun mode
 super + space
     rofi -show drun
@@ -24,6 +22,14 @@ super + Up
 super + Down
     bspc node -f south
 
+# Close the focused window
+super + Delete
+    xdotool getwindowfocus windowkill
+
 # Open power menu (custom bash script)
 super + Delete
     ~/.config/scripts/power_menu.sh
+
+# Launch Flameshot
+super + s
+    flameshot gui
