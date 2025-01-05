@@ -13,6 +13,7 @@ if ! sudo pacman -S --needed \
     arandr \
     ly \
     slock \
+    neofetch \
     bspwm \
     sxhkd \
     polybar \
@@ -148,4 +149,7 @@ echo "Please add your NAS credentials to: $HOME/.config/auth/nas_credentials"
 
 # Step 12: Completion message
 echo "Setup complete! Reboot your system to apply all changes."
+
+cd ..
+
 rm -rf ~/dotfiles
